@@ -20,6 +20,12 @@ class appli:
         with self.driver.session() as session:
             node_id = session.write_transaction(create_relation_tx, first_type, list_one, second_type, list_second, nature)
 
+    def create_single_relation(self, first_type, list_one, second_type, list_second, nature):
+        with self.driver.session() as session:
+            node_id = session.write_transaction(create_single_relation_tx, first_type, list_one, second_type, list_second, nature)
+
+def create_single_relation_tx(tx, first_type,list_one, second_type, list_second, nature):
+    create_relation(tx,first_type,list_one,second_type,list_second,nature)
 
 def create_relation_tx(tx, first_type,list_one, second_type, list_second, nature):
     for i in range(0,len(list_one),1):
@@ -108,6 +114,30 @@ def collect_infos_sherpa(file_name):
     value = ["Sherpa", "Contact", "Campus", "Project"]
     return infos, value
 
+def create_teams_and_relation(name_list, equipe_list, sherpa_list,app):
+    lead = []
+    others = []
+    current_team = 0
+    current_lead = "bz"
+    for i in range(len(name_list)):
+
+        if current_team == equipe_list[i] :
+            app.create_single_relation("Student",current_lead,"Student",name_list[i],"LEAD_BY")
+
+            others.append(name_list[i])
+            lead.append(current_lead)
+
+        else:
+            app.create_single_relation("Student", current_lead, "Student", sherpa_list[i], "SUPERVISED_BY")
+            current_team = current_team + 1
+            current_lead = name_list[i]
+            lead.append(current_lead)
+            others.append(current_lead)
+    return lead, others
+
+
+
+
 def import_files(app):
 
     #FIRST CSV
@@ -127,6 +157,9 @@ def import_files(app):
     #THIRD Effectifs campus by campus
     val_Lille = parcours_csv.read_effectif("ISG_Lille")
     create_student(val_Lille[0],val_Lille[1],val_Lille[2],val_Lille[3],val_Lille[4])
+
+    create_teams_and_relation(val_Lille[1],val_Lille[3],val_Lille[6],app)
+
 
 
 
