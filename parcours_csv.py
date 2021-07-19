@@ -85,21 +85,25 @@ def read_effectif(campuss):
     for row in sheet.iter_rows(min_row=2):
 
         promo.append(row[1].value)
-        first = str(row[2].value)
-        second = str(row[3].value)
+        first = str(row[2].value).lower()
+        first = first[0].upper() + first[1:]
+        second = str(row[3].value).lower()
+        second = second[0].upper() + second[1:]
         name.append(first + " " + second)
         contact.append(row[4].value)
         equipe.append(row[5].value)
         partenaire.append(row[6].value)
-        sherpa.append(row[8].value)
+        sherpa_name = row[8].value
+        sherpa_list = sherpa_name.split()
+
+        first_sherpa = sherpa_list[0].lower()
+        first_sherpa = first_sherpa[0].upper() + first_sherpa[1:]
+
+        second_sherpa = sherpa_list[1].lower()
+        second_sherpa = second_sherpa[0].upper() + second_sherpa[1:]
+
+        sherpa.append(first_sherpa + " " + second_sherpa)
         campus.append(campuss)
 
-    print(promo)
-    print(name)
-    print(contact)
-    print(equipe)
-    print(campus)
-    print(partenaire)
-    print(sherpa)
 
-    return promo, name, contact, equipe, campus, partenaire, sherpa
+    return [promo, name, contact, equipe, campus, partenaire, sherpa]

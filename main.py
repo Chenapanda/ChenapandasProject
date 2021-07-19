@@ -125,6 +125,8 @@ def import_files(app):
     create_sherpa(infos[0], infos[1], infos[2])
 
     #THIRD Effectifs campus by campus
+    val_Lille = parcours_csv.read_effectif("ISG_Lille")
+    create_student(val_Lille[0],val_Lille[1],val_Lille[2],val_Lille[3],val_Lille[4])
 
 
 
@@ -138,5 +140,4 @@ def anyhow():
     test.close()
 
 if __name__ == "__main__":
-    parcours_csv.read_effectif("ISG_Lille")
-    #anyhow()
+    anyhow()
