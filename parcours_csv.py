@@ -72,9 +72,9 @@ def read_file(name_of_the_file):
 
         return Project, Leader, Binome, Leader_contact, Binome_contact, Leader_tel, Binome_tel
 
-def read_effectif_ISG_Lille():
+def read_effectif(campuss):
     wb_obj = openpyxl.load_workbook("EFFECTIFS_CAMPUS.xlsx",data_only=True)
-    sheet = wb_obj['ISG_Lille']
+    sheet = wb_obj[campuss]
     name = []
     promo = []
     contact = []
@@ -92,7 +92,7 @@ def read_effectif_ISG_Lille():
         equipe.append(row[5].value)
         partenaire.append(row[6].value)
         sherpa.append(row[8].value)
-        campus.append("Lille")
+        campus.append(campuss)
 
     print(promo)
     print(name)

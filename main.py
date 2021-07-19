@@ -138,5 +138,5 @@ def anyhow():
     test.close()
 
 if __name__ == "__main__":
-    parcours_csv.read_effectif_ISG_Lille()
+    parcours_csv.read_effectif("ISG_Lille")
     #anyhow()
