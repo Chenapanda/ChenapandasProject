@@ -1,6 +1,7 @@
 import csv
 import json
-
+import pandas as pd
+import openpyxl
 def read_json(name_of_the_file):
 
     f = open(name_of_the_file)
@@ -70,3 +71,35 @@ def read_file(name_of_the_file):
                 Binome_tel.append("None")
 
         return Project, Leader, Binome, Leader_contact, Binome_contact, Leader_tel, Binome_tel
+
+def read_effectif_ISG_Lille():
+    wb_obj = openpyxl.load_workbook("EFFECTIFS_CAMPUS.xlsx",data_only=True)
+    sheet = wb_obj['ISG_Lille']
+    name = []
+    promo = []
+    contact = []
+    equipe = []
+    campus = []
+    partenaire = []
+    sherpa = []
+    for row in sheet.iter_rows(min_row=2):
+
+        promo.append(row[1].value)
+        first = str(row[2].value)
+        second = str(row[3].value)
+        name.append(first + " " + second)
+        contact.append(row[4].value)
+        equipe.append(row[5].value)
+        partenaire.append(row[6].value)
+        sherpa.append(row[8].value)
+        campus.append("Lille")
+
+    print(promo)
+    print(name)
+    print(contact)
+    print(equipe)
+    print(campus)
+    print(partenaire)
+    print(sherpa)
+
+    return promo, name, contact, equipe, campus, partenaire, sherpa
