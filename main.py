@@ -169,12 +169,15 @@ def formate_project(project_name_liste):
     project_fin_name = []
     cur_name = " "
     for i in project_name_liste:
-        if cur_name != i:
-            project_fin_name.append(i)
-            cur_name = i
+        if cur_name != i and i:
+            toto = Project.nodes.first_or_none(name= i)
+            if not toto:
+                project_fin_name.append(i)
+                cur_name = i
 
 
     create_project(project_fin_name)
+    print(project_fin_name)
     return project_fin_name
 
 
@@ -184,19 +187,21 @@ def formate_project(project_name_liste):
 def import_files(app):
 
     #FIRST CSV
-    #infos, val = collect_infos_leads("liste_leads.csv")
+    infos, val = collect_infos_leads("liste_leads.csv")
 
     #create_project(infos[0])
-    #create_lead(infos[1], infos[3], infos[5])
-    #create_binome(infos[2], infos[4], infos[6])
-    #app.create_relation("Project", infos[0], "Lead", infos[1], "WORKED_ON")
 
-    #app.create_relation("Lead", infos[1], "Binome", infos[2], "WORKED_WITH")
+
+
+
 
     #SECOND Json
     #infos, val = collect_infos_sherpa("sherpas.json")
     #create_sherpa(infos[0], infos[1], infos[2])
 
+    create_lead(infos[1], infos[3], infos[5])
+    create_binome(infos[2], infos[4], infos[6])
+    app.create_relation("Lead", infos[1], "Binome", infos[2], "WORKED_WITH")
     #THIRD Effectifs campus by campus
     val_Lille = parcours_csv.read_effectif("ISG_Lille")
 
@@ -207,7 +212,7 @@ def import_files(app):
 
     create_teams_and_relation(val_Lille[1],val_Lille[3],val_Lille[6],val_Lille[5],app)
 
-    print(val_Lille[7])
+    #print(val_Lille[7])
     val_Lyon = parcours_csv.read_effectif("ISG_Lyon")
 
     formate_sherpa(val_Lyon[6], 'Lyon')
@@ -217,6 +222,7 @@ def import_files(app):
     create_teams_and_relation(val_Lyon[1], val_Lyon[3], val_Lyon[6],val_Lyon[5], app)
 
 
+    app.create_relation("Project", infos[0], "Lead", infos[1], "WORKED_ON")
 
 
 
