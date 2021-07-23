@@ -280,63 +280,21 @@ def import_files(app):
     #FIRST CSV
     infos, val = collect_infos_leads("liste_leads.csv")
 
-    #create_project(infos[0])
-
-
-
-
-
-    #SECOND Json
-    #infos, val = collect_infos_sherpa("sherpas.json")
-    #create_sherpa(infos[0], infos[1], infos[2])
-
     create_lead(infos[1], infos[3], infos[5])
     create_binome(infos[2], infos[4], infos[6])
     app.create_relation("Lead", infos[1], "Binome", infos[2], "WORKED_WITH")
-    #THIRD Effectifs campus by campus
 
-    val_Lille = parcours_csv.read_effectif("ISG_Lille")
-    formate_sherpa(val_Lille[6],'Lille')
-    formate_project(val_Lille[5])
-    create_student(val_Lille[0],val_Lille[1],val_Lille[2],val_Lille[3],val_Lille[4])
-    create_teams_and_relation(val_Lille[1],val_Lille[3],val_Lille[6],val_Lille[5],app)
+    #Effectifs campus by campus
+    cities = ["Lille", "Lyon", "Bordeaux", "Paris", "Strasbourg", "Toulouse"]
 
-
-    val_Lyon = parcours_csv.read_effectif("ISG_Lyon")
-    formate_sherpa(val_Lyon[6], 'Lyon')
-    formate_project(val_Lyon[5])
-    create_student(val_Lyon[0], val_Lyon[1], val_Lyon[2], val_Lyon[3], val_Lyon[4])
-    create_teams_and_relation(val_Lyon[1], val_Lyon[3], val_Lyon[6],val_Lyon[5], app)
-    app.create_relation("Project", infos[0], "Lead", infos[1], "WORKED_ON")
-
-
-    val_Bordeaux = parcours_csv.read_effectif("ISG_Bordeaux")
-    formate_sherpa(val_Bordeaux[6], 'Bordeaux')
-    formate_project(val_Bordeaux[5])
-    create_student(val_Bordeaux[0], val_Bordeaux[1], val_Bordeaux[2], val_Bordeaux[3], val_Bordeaux[4])
-    create_teams_and_relation(val_Bordeaux[1], val_Bordeaux[3], val_Bordeaux[6], val_Bordeaux[5], app)
-
-    val_Paris = parcours_csv.read_effectif("ISG_Paris")
-    formate_sherpa(val_Paris[6], 'Paris')
-    formate_project(val_Paris[5])
-    create_student(val_Paris[0], val_Paris[1], val_Paris[2], val_Paris[3], val_Paris[4])
-    create_teams_and_relation(val_Paris[1], val_Paris[3], val_Paris[6], val_Paris [5], app)
-
-    val_Strasbourg = parcours_csv.read_effectif("ISG_Strasbourg")
-    formate_sherpa(val_Strasbourg[6], 'Strasbourg')
-    formate_project(val_Strasbourg[5])
-    create_student(val_Strasbourg[0], val_Strasbourg[1], val_Strasbourg[2], val_Strasbourg[3], val_Strasbourg[4])
-    create_teams_and_relation(val_Strasbourg[1], val_Strasbourg[3], val_Strasbourg[6], val_Strasbourg[5], app)
-
-    val_Toulouse = parcours_csv.read_effectif("ISG_Toulouse")
-    formate_sherpa(val_Toulouse[6], 'Toulouse')
-    formate_project(val_Toulouse[5])
-    create_student(val_Toulouse[0], val_Toulouse[1], val_Toulouse[2], val_Toulouse[3], val_Toulouse[4])
-    create_teams_and_relation(val_Toulouse[1], val_Toulouse[3], val_Toulouse[6], val_Toulouse[5], app)
+    for city in cities:
+        val = parcours_csv.read_effectif("ISG_" + city)
+        formate_sherpa(val[6], city)
+        formate_project(val[5])
+        create_student(val[0],val[1],val[2],val[3],val[4])
+        create_teams_and_relation(val[1],val[3],val[6],val[5],app)
 
     app.create_relation("Project", infos[0], "Lead", infos[1], "WORKED_ON")
-
-
 
 def anyhow():
     test = appli("bolt://localhost:7687", "neo4j", "1234")
