@@ -191,44 +191,116 @@ class Binome(StructuredNode):
 
 
 def create_student(promo_list,name_list,contact_list,equipe_list,campus_list):
+    '''
+    Creates objects of the Student class
+
+            Parameters:
+                    promo_list ([str]): List of the promotions of the student
+                    name_list ([str]): List of the names of the student
+                    contact_list ([str]): List of the email addresses of the student
+                    equipe_list ([str]): List of the teams of the student
+                    campus_list ([str]): List of the campus of the student
+
+            Returns:
+                    None
+    '''
     for i in range(0, len(name_list), 1):
         toto = Student(promo=promo_list[i],name=name_list[i], contact=contact_list[i],equipe=equipe_list[i],campus=campus_list[i]).save()
 
 
 def create_sherpa(name_list, contact_list, campus_list):
+    '''
+    Creates objects of the Sherpa class
+
+            Parameters:
+                    name_list ([str]): List of the names of the sherpas
+                    contact_list ([str]): List of the email addresses of the sherpas
+                    campus_list ([str]): List of the campus of the sherpas
+
+            Returns:
+                    None
+    '''
     for i in range(0, len(name_list), 1):
         toto = Sherpa(name=name_list[i], contact=contact_list[i], campus=campus_list[i]).save()
 
 
 def create_binome(name_list, contact_list, tel_list):
+    '''
+    Creates objects of the Binome class
+
+            Parameters:
+                    name_list ([str]): List of the names of the seconds
+                    contact_list ([str]): List of the email addresses of the seconds
+                    tel_list ([str]): List of the telephone numbers of the seconds
+
+            Returns:
+                    None
+    '''
     for i in range(0, len(name_list), 1):
         toto = Binome(name=name_list[i], contact=contact_list[i], tel=tel_list[i]).save()
 
 
 def create_project(name_list):
+    '''
+    Creates objects of the Project class
+
+            Parameters:
+                    name_list ([str]): List of the names of the projects
+
+            Returns:
+                    None
+    '''
     for p in name_list:
         toto = Project(name = p).save()
 
 
 def create_lead(name_list, contact_list, tel_list):
+    '''
+    Creates objects of the Lead class
+
+            Parameters:
+                    name_list ([str]): List of the names of the lead
+                    contact_list ([str]): List of the email addresses of the lead
+                    tel_list ([str]): List of the telephone numbers of the lead
+
+            Returns:
+                    None
+    '''
     for i in range(0,len(name_list),1):
         toto = Lead(name=name_list[i],contact=contact_list[i],tel=tel_list[i]).save()
 
 
 def collect_infos_leads(file_name):
+    '''
+    Collects information on the read file
+
+            Parameters:
+                    file_name (str): name of the file to collect lead infos from
+
+            Returns:
+                    infos ([str]): informations about the lead
+                    value ([str]): titles of the informations
+    '''
     a, b, c, d, e, f, g = parcours_csv.read_file(file_name)
     infos = [a, b, c, d, e, f, g]
     value = ["Project", "Lead", "Binome", "Lead_contact", "Binome_contact", "Lead_tel", "Binome_tel"]
     return infos, value
 
-
-def collect_infos_sherpa(file_name):
-    a, b, c, d = parcours_csv.read_json(file_name)
-    infos = [a,b,c,d]
-    value = ["Sherpa", "Contact", "Campus", "Project"]
-    return infos, value
-
 def create_teams_and_relation(name_list, equipe_list, sherpa_list,project_liste,app):
+    '''
+    Creates teams and relations between the lead, the second, the sherpas, the students and the project
+
+            Parameters:
+                    name_list ([str]): names of the students
+                    equipe_list ([str]): names of the teams
+                    sherpa_list ([str]): names of the sherpas
+                    project_liste ([str]): names of the projects
+                    app (appli): object of the appli class
+
+            Returns:
+                    lead ([str]): names of the leads
+                    others ([str]): names o other people working on the project
+    '''
     lead = []
     others = []
     current_team = 0
@@ -253,6 +325,16 @@ def create_teams_and_relation(name_list, equipe_list, sherpa_list,project_liste,
 
 
 def formate_sherpa(sherpa_name_liste,camp):
+    '''
+    Normalises the names of the sherpas from the files
+
+            Parameters:
+                    sherpa_name_liste ([str]): names of the sherpas
+                    camp (str): campus
+
+            Returns:
+                    sherpa_fin_name ([str]): fixed names of the sherpas
+    '''
     campus = []
     sherpa_fin_name = []
     contact = []
@@ -280,6 +362,15 @@ def formate_sherpa(sherpa_name_liste,camp):
 
 
 def formate_project(project_name_liste):
+    '''
+    Normalises the names of the projects from the files
+
+            Parameters:
+                    project_name_liste ([str]): names of the projects
+
+            Returns:
+                    project_fin_name ([str]): fixed names of the projects
+    '''
     project_fin_name = []
     cur_name = " "
     for i in project_name_liste:
@@ -291,11 +382,18 @@ def formate_project(project_name_liste):
 
 
     create_project(project_fin_name)
-    print(project_fin_name)
     return project_fin_name
 
 def import_files(app):
+    '''
+    Reads the files and creates nodes, also creates relations between the nodes.
 
+            Parameters:
+                    app (appli): application for neo4j
+
+            Returns:
+                    None
+    '''
     #FIRST CSV
     infos, val = collect_infos_leads("liste_leads.csv")
 
@@ -316,6 +414,15 @@ def import_files(app):
     app.create_relation("Project", infos[0], "Lead", infos[1], "WORKED_ON")
 
 def anyhow():
+    '''
+    Resets and launches the application for neo4j and launches the project
+
+            Parameters:
+                    None
+
+            Returns:
+                    None
+    '''
     test = appli("bolt://localhost:7687", "neo4j", "1234")
     test.reset()
     config.DATABASE_URL = 'bolt://neo4j:1234@localhost:7687'
