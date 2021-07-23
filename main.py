@@ -230,7 +230,19 @@ def import_files(app):
     formate_sherpa(val_Paris[6], 'Paris')
     formate_project(val_Paris[5])
     create_student(val_Paris[0], val_Paris[1], val_Paris[2], val_Paris[3], val_Paris[4])
-    create_teams_and_relation(val_Paris[1], val_Paris[3], val_Paris[6], val_Paris[5], app)
+    create_teams_and_relation(val_Paris[1], val_Paris[3], val_Paris[6], val_Paris [5], app)
+
+    val_Strasbourg = parcours_csv.read_effectif("ISG_Strasbourg")
+    formate_sherpa(val_Strasbourg[6], 'Strasbourg')
+    formate_project(val_Strasbourg[5])
+    create_student(val_Strasbourg[0], val_Strasbourg[1], val_Strasbourg[2], val_Strasbourg[3], val_Strasbourg[4])
+    create_teams_and_relation(val_Strasbourg[1], val_Strasbourg[3], val_Strasbourg[6], val_Strasbourg[5], app)
+
+    val_Toulouse = parcours_csv.read_effectif("ISG_Toulouse")
+    formate_sherpa(val_Toulouse[6], 'Toulouse')
+    formate_project(val_Toulouse[5])
+    create_student(val_Toulouse[0], val_Toulouse[1], val_Toulouse[2], val_Toulouse[3], val_Toulouse[4])
+    create_teams_and_relation(val_Toulouse[1], val_Toulouse[3], val_Toulouse[6], val_Toulouse[5], app)
 
     app.create_relation("Project", infos[0], "Lead", infos[1], "WORKED_ON")
 
