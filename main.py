@@ -42,17 +42,74 @@ def reset_tx(tx):
 
 
 class Project(StructuredNode):
+    """
+    A class to represent a project.
+
+    ...
+
+    Attributes
+    ----------
+    uid : id
+        uid of the project
+    name : str
+        name of the project
+    Methods
+    -------
+    None
+    """
     uid = UniqueIdProperty()
     name = StringProperty(unique_index=True)
 
 
 class Lead(StructuredNode):
+    """
+    A class to represent the lead of a project.
+
+    ...
+
+    Attributes
+    ----------
+    uid : id
+        uid of the person that leads the project
+    name : str
+        name of the person that leads the project
+    contact : str
+        email adress of the person that leads the project
+    tel : str
+        telephone number of the person that leads the project
+    Methods
+    -------
+    None
+    """
     uid = UniqueIdProperty()
     name = StringProperty(unique_index=True)
     contact = StringProperty(unique_index=True)
     tel = StringProperty(unique_index=True)
 
 class Student(StructuredNode):
+    """
+    A class to represent a student on a project.
+
+    ...
+
+    Attributes
+    ----------
+    uid : id
+        uid of the student
+    promo : str
+        promotion of the student
+    name : str
+        name of the student
+    contact : str
+        email adress of the student
+    equipe : int
+        number of the student's team
+    campus : str
+        campus of the student
+    Methods
+    -------
+    None
+    """
     uid = UniqueIdProperty()
     promo = StringProperty(unique_index=True)
     name = StringProperty(unique_index=True)
@@ -63,6 +120,25 @@ class Student(StructuredNode):
 
 
 class Sherpa(StructuredNode):
+    """
+        A class to represent a Sherpa.
+
+        ...
+
+        Attributes
+        ----------
+        uid : id
+            uid of the Sherpa
+        name : str
+            name of the Sherpa
+        contact : str
+            email adress of the Sherpa
+        campus : str
+            campus of the Sherpa
+        Methods
+        -------
+        None
+        """
     uid = UniqueIdProperty()
     name = StringProperty(unique_index=True)
     contact = StringProperty(unique_index=True)
@@ -70,6 +146,25 @@ class Sherpa(StructuredNode):
 
 
 class Binome(StructuredNode):
+    """
+        A class to represent the second lead of a project, the second.
+
+        ...
+
+        Attributes
+        ----------
+        uid : id
+            uid of the second
+        name : str
+            name of the second
+        contact : str
+            email adress of the second
+        tel : str
+            telephone number of the second
+        Methods
+        -------
+        None
+        """
     uid = UniqueIdProperty()
     name = StringProperty(unique_index=True)
     contact = StringProperty(unique_index=True)
@@ -180,10 +275,6 @@ def formate_project(project_name_liste):
     print(project_fin_name)
     return project_fin_name
 
-
-
-
-
 def import_files(app):
 
     #FIRST CSV
@@ -203,7 +294,6 @@ def import_files(app):
     create_binome(infos[2], infos[4], infos[6])
     app.create_relation("Lead", infos[1], "Binome", infos[2], "WORKED_WITH")
     #THIRD Effectifs campus by campus
-
 
     val_Lille = parcours_csv.read_effectif("ISG_Lille")
     formate_sherpa(val_Lille[6],'Lille')
