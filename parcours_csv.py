@@ -26,43 +26,6 @@ def check_json(sherpa_name):
 
     return None
 
-def read_json(name_of_the_file):
-    '''
-    Reads the json file to return information
-
-            Parameters:
-                    name_of_the_file (str): Name of the file to read
-
-            Returns:
-                    names ([str]): names of the sherpas
-                    contacts ([str]): mail adresses of the sherpas
-                    campuss ([str]): campuss of the sherpas
-                    projects ([str]): project the sherpas are attached to
-    '''
-    f = open(name_of_the_file)
-
-    data = json.load(f)
-    names = []
-    contacts = []
-    campuss = []
-    projects = []
-    for i in data['sherpas']:
-        first = i['firstname'].lower()
-        first = first[0].upper() + first[1:]
-        second = i['lastname'].lower()
-        second = second[0].upper() + second[1:]
-        name = first + second
-        contact = i['email']
-        campus = i['campus']
-        project = i['project']
-        projects.append(project)
-        campuss.append(campus)
-        contacts.append(contact)
-        names.append(name)
-
-    return names, contacts, campuss, projects
-
-
 def read_file(name_of_the_file):
     '''
     Reads the csv file to return information
