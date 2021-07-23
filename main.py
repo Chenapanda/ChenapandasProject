@@ -5,6 +5,25 @@ import parcours_csv
 
 
 class appli:
+    """
+    A class to modify the nodes for neo4j.
+
+    ...
+
+    Attributes
+    ----------
+    None
+    Methods
+    -------
+    close():
+        closes the driver connection
+    reset():
+        resets the driver connection
+    create_relation(first_type, list_one, second_type, list_second, nature):
+        creates relations between two lists of objects
+    create_single_relation( first_type, list_one, second_type, list_second, nature):
+        creates a relation between two objects
+    """
     def __init__(self, uri, user, password):
         self.driver = GraphDatabase.driver(uri, auth=(user, password))
 
