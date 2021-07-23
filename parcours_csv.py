@@ -2,6 +2,21 @@ import csv
 import json
 import pandas as pd
 import openpyxl
+
+
+def check_json(sherpa_name):
+    f = open('sherpas.json')
+    data = json.load(f)
+    for i in data['sherpas']:
+        first = i['firstname'].lower()
+        first = first[0].upper() + first[1:]
+        second = i['lastname'].lower()
+        second = second[0].upper() + second[1:]
+        name = first + second
+        if name == sherpa_name:
+            return i['email']
+
+    return None
 def read_json(name_of_the_file):
 
     f = open(name_of_the_file)
@@ -82,9 +97,18 @@ def read_effectif(campuss):
     campus = []
     partenaire = []
     sherpa = []
+    project = []
     for row in sheet.iter_rows(min_row=2):
-
+        if (not row[1].value):
+            break
         promo.append(row[1].value)
+
+        project_name = row[6].value
+        if (not project_name):
+            project.append(project[len(project) - 1])
+        else:
+            project.append(project_name)
+
         first = str(row[2].value).lower()
         first = first[0].upper() + first[1:]
         second = str(row[3].value).lower()
@@ -94,16 +118,19 @@ def read_effectif(campuss):
         equipe.append(row[5].value)
         partenaire.append(row[6].value)
         sherpa_name = row[8].value
-        sherpa_list = sherpa_name.split()
+        if (not sherpa_name):
+            sherpa.append(first_sherpa + " " + second_sherpa)
+        else:
+            sherpa_list = sherpa_name.split()
 
-        first_sherpa = sherpa_list[0].lower()
-        first_sherpa = first_sherpa[0].upper() + first_sherpa[1:]
+            first_sherpa = sherpa_list[0].lower()
+            first_sherpa = first_sherpa[0].upper() + first_sherpa[1:]
 
-        second_sherpa = sherpa_list[1].lower()
-        second_sherpa = second_sherpa[0].upper() + second_sherpa[1:]
+            second_sherpa = sherpa_list[1].lower()
+            second_sherpa = second_sherpa[0].upper() + second_sherpa[1:]
 
-        sherpa.append(first_sherpa + " " + second_sherpa)
+            sherpa.append(first_sherpa + " " + second_sherpa)
         campus.append(campuss)
 
 
-    return [promo, name, contact, equipe, campus, partenaire, sherpa]
+    return [promo, name, contact, equipe, campus, partenaire, sherpa, project]

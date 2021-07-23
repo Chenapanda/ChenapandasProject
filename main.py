@@ -114,7 +114,7 @@ def collect_infos_sherpa(file_name):
     value = ["Sherpa", "Contact", "Campus", "Project"]
     return infos, value
 
-def create_teams_and_relation(name_list, equipe_list, sherpa_list,app):
+def create_teams_and_relation(name_list, equipe_list, sherpa_list,project_liste,app):
     lead = []
     others = []
     current_team = 0
@@ -128,7 +128,8 @@ def create_teams_and_relation(name_list, equipe_list, sherpa_list,app):
             lead.append(current_lead)
 
         else:
-            app.create_single_relation("Student", current_lead, "Student", sherpa_list[i], "SUPERVISED_BY")
+            app.create_single_relation( "Sherpa", sherpa_list[i],"Student", current_lead, "SUPERVISED_BY")
+            app.create_single_relation( "Project", project_liste[i],"Student", current_lead, "WORKING_ON")
             current_team = current_team + 1
             current_lead = name_list[i]
             lead.append(current_lead)
@@ -137,28 +138,83 @@ def create_teams_and_relation(name_list, equipe_list, sherpa_list,app):
 
 
 
+def formate_sherpa(sherpa_name_liste,camp):
+    campus = []
+    sherpa_fin_name = []
+    contact = []
+    cur_name = " "
+    for i in sherpa_name_liste:
+        if cur_name != i:
+            sherpa_fin_name.append(i)
+            cur_name = i
+
+    for i in sherpa_fin_name:
+        campus.append(camp)
+
+    for i in sherpa_fin_name:
+        stock = parcours_csv.check_json(i)
+        if stock:
+            contact.append(stock)
+        else:
+            toto = i.split()
+            first = toto[0]
+            second = toto[1]
+            contact.append(first + '.' + second + '@isg.fr')
+
+    create_sherpa(sherpa_fin_name,contact,campus)
+    return sherpa_fin_name
+
+
+def formate_project(project_name_liste):
+    project_fin_name = []
+    cur_name = " "
+    for i in project_name_liste:
+        if cur_name != i:
+            project_fin_name.append(i)
+            cur_name = i
+
+
+    create_project(project_fin_name)
+    return project_fin_name
+
+
+
+
 
 def import_files(app):
 
     #FIRST CSV
-    infos, val = collect_infos_leads("liste_leads.csv")
+    #infos, val = collect_infos_leads("liste_leads.csv")
 
-    create_project(infos[0])
-    create_lead(infos[1], infos[3], infos[5])
-    create_binome(infos[2], infos[4], infos[6])
-    app.create_relation("Project", infos[0], "Lead", infos[1], "WORKED_ON")
+    #create_project(infos[0])
+    #create_lead(infos[1], infos[3], infos[5])
+    #create_binome(infos[2], infos[4], infos[6])
+    #app.create_relation("Project", infos[0], "Lead", infos[1], "WORKED_ON")
 
-    app.create_relation("Lead", infos[1], "Binome", infos[2], "WORKED_WITH")
+    #app.create_relation("Lead", infos[1], "Binome", infos[2], "WORKED_WITH")
 
     #SECOND Json
-    infos, val = collect_infos_sherpa("sherpas.json")
-    create_sherpa(infos[0], infos[1], infos[2])
+    #infos, val = collect_infos_sherpa("sherpas.json")
+    #create_sherpa(infos[0], infos[1], infos[2])
 
     #THIRD Effectifs campus by campus
     val_Lille = parcours_csv.read_effectif("ISG_Lille")
+
+
+    formate_sherpa(val_Lille[6],'Lille')
+    formate_project(val_Lille[5])
     create_student(val_Lille[0],val_Lille[1],val_Lille[2],val_Lille[3],val_Lille[4])
 
-    create_teams_and_relation(val_Lille[1],val_Lille[3],val_Lille[6],app)
+    create_teams_and_relation(val_Lille[1],val_Lille[3],val_Lille[6],val_Lille[5],app)
+
+    print(val_Lille[7])
+    val_Lyon = parcours_csv.read_effectif("ISG_Lyon")
+
+    formate_sherpa(val_Lyon[6], 'Lyon')
+    formate_project(val_Lyon[5])
+    create_student(val_Lyon[0], val_Lyon[1], val_Lyon[2], val_Lyon[3], val_Lyon[4])
+
+    create_teams_and_relation(val_Lyon[1], val_Lyon[3], val_Lyon[6],val_Lyon[5], app)
 
 
 
