@@ -203,24 +203,34 @@ def import_files(app):
     create_binome(infos[2], infos[4], infos[6])
     app.create_relation("Lead", infos[1], "Binome", infos[2], "WORKED_WITH")
     #THIRD Effectifs campus by campus
+
+
     val_Lille = parcours_csv.read_effectif("ISG_Lille")
-
-
     formate_sherpa(val_Lille[6],'Lille')
     formate_project(val_Lille[5])
     create_student(val_Lille[0],val_Lille[1],val_Lille[2],val_Lille[3],val_Lille[4])
-
     create_teams_and_relation(val_Lille[1],val_Lille[3],val_Lille[6],val_Lille[5],app)
 
-    #print(val_Lille[7])
-    val_Lyon = parcours_csv.read_effectif("ISG_Lyon")
 
+    val_Lyon = parcours_csv.read_effectif("ISG_Lyon")
     formate_sherpa(val_Lyon[6], 'Lyon')
     formate_project(val_Lyon[5])
     create_student(val_Lyon[0], val_Lyon[1], val_Lyon[2], val_Lyon[3], val_Lyon[4])
-
     create_teams_and_relation(val_Lyon[1], val_Lyon[3], val_Lyon[6],val_Lyon[5], app)
+    app.create_relation("Project", infos[0], "Lead", infos[1], "WORKED_ON")
 
+
+    val_Bordeaux = parcours_csv.read_effectif("ISG_Bordeaux")
+    formate_sherpa(val_Bordeaux[6], 'Bordeaux')
+    formate_project(val_Bordeaux[5])
+    create_student(val_Bordeaux[0], val_Bordeaux[1], val_Bordeaux[2], val_Bordeaux[3], val_Bordeaux[4])
+    create_teams_and_relation(val_Bordeaux[1], val_Bordeaux[3], val_Bordeaux[6], val_Bordeaux[5], app)
+
+    val_Paris = parcours_csv.read_effectif("ISG_Paris")
+    formate_sherpa(val_Paris[6], 'Paris')
+    formate_project(val_Paris[5])
+    create_student(val_Paris[0], val_Paris[1], val_Paris[2], val_Paris[3], val_Paris[4])
+    create_teams_and_relation(val_Paris[1], val_Paris[3], val_Paris[6], val_Paris[5], app)
 
     app.create_relation("Project", infos[0], "Lead", infos[1], "WORKED_ON")
 

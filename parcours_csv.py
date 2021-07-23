@@ -99,7 +99,7 @@ def read_effectif(campuss):
     sherpa = []
     project = []
     for row in sheet.iter_rows(min_row=2):
-        if (not row[1].value):
+        if (not row[0].value):
             break
         promo.append(row[1].value)
 
@@ -125,7 +125,6 @@ def read_effectif(campuss):
 
             first_sherpa = sherpa_list[0].lower()
             first_sherpa = first_sherpa[0].upper() + first_sherpa[1:]
-
             second_sherpa = sherpa_list[1].lower()
             second_sherpa = second_sherpa[0].upper() + second_sherpa[1:]
 
