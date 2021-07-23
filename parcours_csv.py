@@ -5,6 +5,15 @@ import openpyxl
 
 
 def check_json(sherpa_name):
+    '''
+    Returns the email of the Sherpa named sherpa_name if he is in the json file
+
+            Parameters:
+                    sherpa_name (str): Name of the sherpa to be found
+
+            Returns:
+                    mail (str): mail of the found sherpa
+    '''
     f = open('sherpas.json')
     data = json.load(f)
     for i in data['sherpas']:
@@ -17,8 +26,20 @@ def check_json(sherpa_name):
             return i['email']
 
     return None
-def read_json(name_of_the_file):
 
+def read_json(name_of_the_file):
+    '''
+    Reads the json file to return information
+
+            Parameters:
+                    name_of_the_file (str): Name of the file to read
+
+            Returns:
+                    names ([str]): names of the sherpas
+                    contacts ([str]): mail adresses of the sherpas
+                    campuss ([str]): campuss of the sherpas
+                    projects ([str]): project the sherpas are attached to
+    '''
     f = open(name_of_the_file)
 
     data = json.load(f)
@@ -44,6 +65,21 @@ def read_json(name_of_the_file):
 
 
 def read_file(name_of_the_file):
+    '''
+    Reads the csv file to return information
+
+            Parameters:
+                    name_of_the_file (str): Name of the file to read
+
+            Returns:
+                    Project ([str]): names of the projects
+                    Leader ([str]): names of the leaders
+                    Binome ([str]): names of the seconds
+                    Leader_contact ([str]): email adresses of the leaders
+                    Binome_contact ([str]): email adresses of the seconds
+                    Leader_tel ([str]): phone numbers of the leaders
+                    Binome_tel ([str]): phone numbers of the seconds
+    '''
     with open(name_of_the_file, newline='',encoding="utf8") as csvfile:
         reader = csv.reader(csvfile, delimiter=';', quotechar='|')
         header = next(reader, None)
@@ -88,6 +124,22 @@ def read_file(name_of_the_file):
         return Project, Leader, Binome, Leader_contact, Binome_contact, Leader_tel, Binome_tel
 
 def read_effectif(campuss):
+    '''
+    Reads the excel file to return information
+
+            Parameters:
+                    campuss (str): Name of the campus to find information on
+promo, name, contact, equipe, campus, partenaire, sherpa, project
+            Returns:
+                    promo ([str]): promotions of the students working on this campus
+                    name ([str]): names of the students
+                    contact ([str]): email addresses of the students
+                    equipe ([str]): teams of the students
+                    campus ([str]): name of the campus
+                    partenaire ([str]): names of the partners
+                    sherpa ([str]): names of the sherpas
+                    project ([str]): names of the projects
+    '''
     wb_obj = openpyxl.load_workbook("EFFECTIFS_CAMPUS.xlsx",data_only=True)
     sheet = wb_obj[campuss]
     name = []
